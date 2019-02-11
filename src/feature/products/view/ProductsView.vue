@@ -2,6 +2,7 @@
     <div>
         Lista
         <div>
+            <button v-stream:click="refresh$">Refresh</button>
             <p v-if="loading">Loading...</p>
             <p v-for="product in products">
                 {{ product.name }} | {{ product.price}}
@@ -16,44 +17,40 @@
     import ProductsViewInterface from './ProductsViewInterface';
     import Products from '../entity/Products';
     import {lazyInject, PRODUCTS} from '../di';
-    import ProductsPresenterInterface from '../presenter/ProductsPresenterInterface';
+    import ProductsViewModelInterface from '../ViewModel/ProductsViewModelInterface';
+    import {Subject} from 'rxjs/index';
 
-    @Component
+    @Component<ProductsView>({
+        subscriptions() {
+            this.refresh$ = new Subject<{}>();
+
+            return {
+                loading: this.viewModel.loading$(),
+                products: this.viewModel.products$(),
+                error: this.viewModel.error$(),
+            };
+        },
+    })
     export default class ProductsView extends Vue implements ProductsViewInterface {
-        public products: Products = [];
-        public loading: boolean = false;
+        public loading: boolean;
+        public products: Products;
+        public error: string;
+        public refresh$: Subject<{}>;
 
-        @lazyInject(PRODUCTS.ProductsPresenterInterface)
-        public presenter: ProductsPresenterInterface;
+        @lazyInject(PRODUCTS.ProductsViewModelInterface)
+        public viewModel: ProductsViewModelInterface;
 
         public created() {
-            this.presenter.bind(this);
-        }
+            this.viewModel.onInit();
 
-        public mounted() {
-            this.presenter.onInit();
-        }
-
-        public displayError(message: string): void {
-            console.log('error', message);
-        }
-
-        public displayProducts(products: Products) {
-            this.products = products;
-        }
-
-        public displayLoading(): void {
-            this.loading = true;
-        }
-
-        public hideLoading(): void {
-            this.loading = false;
+            this.$subscribeTo(this.refresh$, (event) => {
+                this.viewModel.onRefresh();
+            });
         }
 
         public beforeDestroy() {
-            this.presenter.onDestroy();
+            this.viewModel.dispose();
         }
-
     }
 </script>
 

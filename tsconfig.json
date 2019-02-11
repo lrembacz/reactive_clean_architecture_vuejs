@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "noImplicitAny": true,
+    "noImplicitThis": true,
     "traceResolution": false,
     "baseUrl": ".",
     "types": [

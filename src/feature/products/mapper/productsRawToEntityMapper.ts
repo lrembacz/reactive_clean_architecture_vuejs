@@ -2,7 +2,7 @@ import ProductInterface from '../entity/ProductInterface';
 import Products from '../entity/Products';
 import { AxiosResponse } from 'axios';
 
-const productsRawToEntityMapper = (value: AxiosResponse<ProductInterface[]>): Products => {
+const productsRawToEntityMapper = (value: AxiosResponse<Products>): Products => {
         return value.data.map((product: ProductInterface) => {
             return {
                 name: product.name,

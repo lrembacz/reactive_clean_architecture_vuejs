@@ -4,5 +4,5 @@ import {Observable} from 'rxjs/index';
 export default interface QueryObjectInterface {
     gateway: GatewayInterface;
 
-    execute<T>(params?: any): Observable<any>;
+    execute(params?: any): Observable<any>;
 }

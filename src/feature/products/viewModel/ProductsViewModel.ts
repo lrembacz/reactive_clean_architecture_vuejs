@@ -1,61 +1,61 @@
-import ProductsPresenterInterface from './ProductsPresenterInterface';
-import ProductsViewInterface from '../view/ProductsViewInterface';
+import ProductsViewModelInterface from './ProductsViewModelInterface';
 import GetProductsUseCase from '../interactors/GetProductsUseCase';
-import ProductInterface from '../entity/ProductInterface';
-import AbstractPresenter from '../../common/presenter/AbstractPresenter';
-import GetProductsObserver from '../observer/GetProductsObserver';
+import AbstractViewModel from '../../common/viewModel/AbstractViewModel';
 import {inject, injectable} from 'inversify';
 import {PRODUCTS} from '../di';
 import SaveFetchedProductsUseCase from '../interactors/SaveFetchedProductsUseCase';
+import {BehaviorSubject, Observable} from 'rxjs/index';
+import Products from '../entity/Products';
+import GetProductsObserver from '../observer/GetProductsObserver';
 import SaveFetchedProductsObserver from '../observer/SaveFetchedProductsObserver';
 
 
 @injectable()
-export default class ProductsPresenter
-    extends AbstractPresenter<ProductsViewInterface>
-    implements ProductsPresenterInterface {
+export default class ProductsViewModel extends AbstractViewModel implements ProductsViewModelInterface {
+    public getProductsUseCase: GetProductsUseCase;
+    public saveFetchedProductsUseCase: SaveFetchedProductsUseCase;
 
-    public view: ProductsViewInterface;
-    // private router: RouterInterface;
-    private getProductsUseCase: GetProductsUseCase;
-    private saveFetchedProductsUseCase: SaveFetchedProductsUseCase;
+    public products: BehaviorSubject<Products> = new BehaviorSubject<Products>([]);
 
     constructor(
         @inject(PRODUCTS.GetProductsUseCase) getProductsUseCase: GetProductsUseCase,
         @inject(PRODUCTS.SaveFetchedProductsUseCase) saveFetchedProductsUseCase: SaveFetchedProductsUseCase,
     ) {
         super();
-        // this.router = router;
         this.getProductsUseCase = getProductsUseCase;
         this.saveFetchedProductsUseCase = saveFetchedProductsUseCase;
     }
 
+    public products$(): Observable<Products> {
+        return this.products.asObservable();
+    }
+
+    public setProducts(products: Products): void {
+        this.products.next(products);
+    }
+
     public onInit(): void {
         this.getProductsUseCase.execute(
-            new GetProductsObserver(this.view),
+            new GetProductsObserver(this),
         );
         this.fetchProducts();
     }
 
     public fetchProducts(): void {
-        this.view.displayLoading();
+        this.setLoading(true);
 
         setTimeout( () => {
             this.saveFetchedProductsUseCase.execute(
-                new SaveFetchedProductsObserver(this.view),
+                new SaveFetchedProductsObserver(this),
             );
         }, 1000);
     }
 
     public onRefresh(): void {
-        this.onInit();
+        this.fetchProducts();
     }
 
-    public onProductSelected(product: ProductInterface): void {
-        // this.router.openProductDetails(product);
-    }
-
-    public onDestroy() {
+    public dispose(): void {
         this.getProductsUseCase.unsubscribe();
         this.saveFetchedProductsUseCase.unsubscribe();
     }

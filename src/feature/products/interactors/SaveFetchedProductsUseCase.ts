@@ -7,27 +7,28 @@ import {inject, injectable} from 'inversify';
 import FetchProductsUseCase from './FetchProductsUseCase';
 import productsRawToEntityMapper from '../mapper/productsRawToEntityMapper';
 import {map, tap} from 'rxjs/internal/operators';
+import FetchProductsQueryObjectInterface from '../queryObject/FetchProductsQueryObjectInterface';
+import {AxiosResponse} from 'axios';
+import ProductInterface from '../entity/ProductInterface';
 
 @injectable()
 export default class SaveFetchedProductsUseCase extends AbstractObservableUseCase<Products> {
     public storeRepository: ProductsStoreRepositoryInterface;
-    public fetchProductsUseCase: FetchProductsUseCase;
+    public fetchProductsQueryObject: FetchProductsQueryObjectInterface;
 
     constructor(
         @inject(PRODUCTS.ProductsStoreRepositoryInterface) storeRepository: ProductsStoreRepositoryInterface,
-        @inject(PRODUCTS.FetchProductsUseCase) fetchProductsUseCase: FetchProductsUseCase,
+        @inject(PRODUCTS.FetchProductsQueryObjectInterface) fetchProductsQueryObject: FetchProductsQueryObjectInterface,
     ) {
         super();
         this.storeRepository = storeRepository;
-        this.fetchProductsUseCase = fetchProductsUseCase;
-        this.storeRepository.setProducts([]);
+        this.fetchProductsQueryObject = fetchProductsQueryObject;
     }
 
     public createObservable(): Observable<Products> {
-        return this.fetchProductsUseCase
-            .createObservable()
+        return this.fetchProductsQueryObject.execute()
             .pipe(
-                map(productsRawToEntityMapper),
+                map<AxiosResponse<Products>, Products>(productsRawToEntityMapper),
                 tap( (prodcuts: Products) => {
                     this.storeRepository.setProducts(prodcuts);
                 }),

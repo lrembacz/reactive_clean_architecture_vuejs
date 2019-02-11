@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/index';
 import {AxiosResponse} from 'axios';
 import {inject, injectable} from 'inversify';
 import {PRODUCTS} from '../di';
+import Products from '../entity/Products';
 
 @injectable()
 export default class FetchProductsQueryObject implements FetchProductsQueryObjectInterface {
@@ -15,7 +16,7 @@ export default class FetchProductsQueryObject implements FetchProductsQueryObjec
         this.gateway = gateway;
     }
 
-    public execute<Products>(): Observable<AxiosResponse<Products>> {
+    public execute(): Observable<AxiosResponse<Products>> {
         return this.gateway.get('/api/products.json');
     }
 

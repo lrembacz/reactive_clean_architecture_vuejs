@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import getDecorators from 'inversify-inject-decorators';
 import { Container } from 'inversify';
 import { PRODUCTS } from './types';
-import ProductsPresenterInterface from '../presenter/ProductsPresenterInterface';
-import ProductsPresenter from '../presenter/ProductsPresenter';
+import ProductsViewModelInterface from '../viewModel/ProductsViewModelInterface';
+import ProductsViewModel from '../viewModel/ProductsViewModel';
 import GetProductsUseCase from '../interactors/GetProductsUseCase';
 import ProductsStoreRepository from '../repository/ProductsStoreRepository';
 import ProductsStoreRepositoryInterface from '../repository/ProductsStoreRepositoryInterface';
@@ -18,7 +18,7 @@ import SaveFetchedProductsUseCase from '../interactors/SaveFetchedProductsUseCas
 
 const container = new Container();
 
-container.bind<ProductsPresenterInterface>(PRODUCTS.ProductsPresenterInterface).to(ProductsPresenter);
+container.bind<ProductsViewModelInterface>(PRODUCTS.ProductsViewModelInterface).to(ProductsViewModel);
 container.bind<GetProductsUseCase>(PRODUCTS.GetProductsUseCase).to(GetProductsUseCase);
 container.bind<ProductsStoreRepositoryInterface>(PRODUCTS.ProductsStoreRepositoryInterface)
     .to(ProductsStoreRepository);

@@ -1,7 +1,7 @@
 import SaveFetchedProductsUseCase from '../interactors/SaveFetchedProductsUseCase';
 
 const PRODUCTS = {
-    ProductsPresenterInterface: Symbol('ProductsPresenterInterface'),
+    ProductsViewModelInterface: Symbol('ProductsViewModelInterface'),
     GetProductsUseCase: Symbol('GetProductsUseCase'),
     ProductsStoreRepositoryInterface: Symbol('ProductsStoreRepositoryInterface'),
     ProductsStoreGatewayInterface: Symbol('ProductsStoreGatewayInterface'),

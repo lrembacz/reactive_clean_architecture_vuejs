@@ -1,17 +1,17 @@
 import Products from '../entity/Products';
-import AbstractPresenterObserver from '../../common/observer/AbstractPresenterObserver';
-import ProductsViewInterface from '../view/ProductsViewInterface';
+import AbstractViewModelObserver from '../../common/observer/AbstractViewModelObserver';
+import ProductsViewModelInterface from '../viewModel/ProductsViewModelInterface';
 
-export default class GetProductsObserver extends AbstractPresenterObserver<Products, ProductsViewInterface> {
-    protected view: ProductsViewInterface;
+export default class GetProductsObserver extends AbstractViewModelObserver<Products, ProductsViewModelInterface> {
+    protected viewModel: ProductsViewModelInterface;
 
-    constructor(view: ProductsViewInterface) {
+    constructor(viewModel: ProductsViewModelInterface) {
         super();
-        this.bind(view);
+        this.bind(viewModel);
     }
 
     public error(error?: Error): void {
-        this.view.displayError(error ? error.message : 'error');
+        this.viewModel.error.next(error ? error.message : 'error');
     }
 
     public complete(): void {
@@ -19,7 +19,7 @@ export default class GetProductsObserver extends AbstractPresenterObserver<Produ
     }
 
     public next(value: Products): void {
-        this.view.displayProducts(value);
+        this.viewModel.products.next(value);
     }
 
 }
