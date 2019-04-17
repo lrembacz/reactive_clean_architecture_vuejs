@@ -16,7 +16,6 @@ export default class ProductsRepository implements ProductsRepositoryInterface {
     }
 
     public fetchProducts(): Observable<Products> {
-        console.log('test');
         return this.gateway.fetchProducts()
             .pipe(
                 map(productsRawToEntityMapper),

@@ -26,7 +26,6 @@ export default class ProductsGateway implements ProductsGatewayInterface {
         return this.api.get<any>('/api/products.json')
             .pipe(
                 map<AxiosResponse<any[]>, any[]>((products: AxiosResponse<any[]>) => {
-                    console.log(products);
                     return products.data || [];
                 }),
             );
