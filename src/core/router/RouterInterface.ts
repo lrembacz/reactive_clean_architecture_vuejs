@@ -1,4 +1,4 @@
-import ProductInterface from '../../products/entity/ProductInterface';
+import ProductInterface from '../../feature/products/entity/ProductInterface';
 
 export default interface RouterInterface {
 

@@ -1,4 +1,4 @@
-import ViewModelInterface from '../../common/viewModel/ViewModelInterface';
+import ViewModelInterface from '../../../core/presentation/viewModel/ViewModelInterface';
 import {BehaviorSubject, Observable} from 'rxjs/index';
 import Products from '../entity/Products';
 

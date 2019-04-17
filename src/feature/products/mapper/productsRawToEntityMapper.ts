@@ -1,12 +1,10 @@
-import ProductInterface from '../entity/ProductInterface';
 import Products from '../entity/Products';
-import { AxiosResponse } from 'axios';
 
-const productsRawToEntityMapper = (value: AxiosResponse<Products>): Products => {
-        return value.data.map((product: ProductInterface) => {
+const productsRawToEntityMapper = (array: any[]): Products => {
+        return array.map((data) => {
             return {
-                name: product.name,
-                price: product.price,
+                name: data.name,
+                price: data.price,
             };
         });
 };

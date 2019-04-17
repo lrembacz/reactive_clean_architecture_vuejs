@@ -1,23 +1,23 @@
-import AbstractObservableUseCase from '../../common/interactors/AbstractObservableUseCase';
+import AbstractObservableUseCase from '../../../core/domain/interactors/AbstractObservableUseCase';
 import Products from '../entity/Products';
 import {Observable} from 'rxjs';
-import ProductsStoreRepositoryInterface from '../repository/ProductsStoreRepositoryInterface';
 import {inject, injectable} from 'inversify';
+import ProductsRepositoryInterface from '../repository/ProductsRepositoryInterface';
 import {PRODUCTS} from '../di';
 
 @injectable()
 export default class GetProductsUseCase extends AbstractObservableUseCase<Products> {
-    public storeRepository: ProductsStoreRepositoryInterface;
+    public productsRepository: ProductsRepositoryInterface;
 
     constructor(
-        @inject(PRODUCTS.ProductsStoreRepositoryInterface) storeRepository: ProductsStoreRepositoryInterface,
+        @inject(PRODUCTS.ProductsRepositoryInterface) productsRepository: ProductsRepositoryInterface,
     ) {
         super();
-        this.storeRepository = storeRepository;
+        this.productsRepository = productsRepository;
     }
 
     public createObservable(): Observable<Products> {
-        return this.storeRepository.getProducts();
+        return this.productsRepository.getProducts();
     }
 
 }

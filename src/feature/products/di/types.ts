@@ -1,14 +1,16 @@
-import SaveFetchedProductsUseCase from '../interactors/SaveFetchedProductsUseCase';
+import ApiClientInterface from '../../../architecture/apiClient/ApiClientInterface';
+import StoreClientInterface from '../../../architecture/storeClient/StoreClientInterface';
 
 const PRODUCTS = {
     ProductsViewModelInterface: Symbol('ProductsViewModelInterface'),
     GetProductsUseCase: Symbol('GetProductsUseCase'),
-    ProductsStoreRepositoryInterface: Symbol('ProductsStoreRepositoryInterface'),
-    ProductsStoreGatewayInterface: Symbol('ProductsStoreGatewayInterface'),
+    ProductsRepositoryInterface: Symbol('ProductsRepositoryInterface'),
     ProductsGatewayInterface: Symbol('ProductsGatewayInterface'),
-    FetchProductsQueryObjectInterface: Symbol('FetchProductsQueryObjectInterface'),
     FetchProductsUseCase: Symbol('FetchProductsUseCase'),
-    SaveFetchedProductsUseCase: Symbol('SaveFetchedProductsUseCase'),
+
+    // SHARED
+    ApiClientInterface: Symbol('ApiClientInterface'),
+    StoreClientInterface: Symbol('StoreClientInterface'),
 };
 
 export { PRODUCTS };

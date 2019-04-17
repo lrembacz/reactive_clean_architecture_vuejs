@@ -5,29 +5,27 @@ import { PRODUCTS } from './types';
 import ProductsViewModelInterface from '../viewModel/ProductsViewModelInterface';
 import ProductsViewModel from '../viewModel/ProductsViewModel';
 import GetProductsUseCase from '../interactors/GetProductsUseCase';
-import ProductsStoreRepository from '../repository/ProductsStoreRepository';
-import ProductsStoreRepositoryInterface from '../repository/ProductsStoreRepositoryInterface';
-import ProductsStoreGateway from '../gateway/ProductsStoreGateway';
-import ProductsStoreGatewayInterface from '../gateway/ProductsStoreGatewayInterface';
 import ProductsGateway from '../gateway/ProductsGateway';
 import ProductsGatewayInterface from '../gateway/ProductsGatewayInterface';
-import FetchProductsQueryObjectInterface from '../queryObject/FetchProductsQueryObjectInterface';
-import FetchProductsQueryObject from '../queryObject/FetchProductsQueryObject';
 import FetchProductsUseCase from '../interactors/FetchProductsUseCase';
-import SaveFetchedProductsUseCase from '../interactors/SaveFetchedProductsUseCase';
+import ProductsRepositoryInterface from '../repository/ProductsRepositoryInterface';
+import ProductsRepository from '../repository/ProductsRepository';
+import ApiClientInterface from '../../../architecture/apiClient/ApiClientInterface';
+import AxiosClient from '../../../architecture/apiClient/AxiosClient';
+import StoreClientInterface from '../../../architecture/storeClient/StoreClientInterface';
+import VuexStoreClient from '../../../architecture/storeClient/VuexStoreClient';
 
 const container = new Container();
 
 container.bind<ProductsViewModelInterface>(PRODUCTS.ProductsViewModelInterface).to(ProductsViewModel);
-container.bind<GetProductsUseCase>(PRODUCTS.GetProductsUseCase).to(GetProductsUseCase);
-container.bind<ProductsStoreRepositoryInterface>(PRODUCTS.ProductsStoreRepositoryInterface)
-    .to(ProductsStoreRepository);
-container.bind<ProductsStoreGatewayInterface>(PRODUCTS.ProductsStoreGatewayInterface).to(ProductsStoreGateway);
 container.bind<ProductsGatewayInterface>(PRODUCTS.ProductsGatewayInterface).to(ProductsGateway);
-container.bind<FetchProductsQueryObjectInterface>(PRODUCTS.FetchProductsQueryObjectInterface)
-    .to(FetchProductsQueryObject);
+container.bind<ProductsRepositoryInterface>(PRODUCTS.ProductsRepositoryInterface).to(ProductsRepository);
+
 container.bind<FetchProductsUseCase>(PRODUCTS.FetchProductsUseCase).to(FetchProductsUseCase);
-container.bind<SaveFetchedProductsUseCase>(PRODUCTS.SaveFetchedProductsUseCase).to(SaveFetchedProductsUseCase);
+container.bind<GetProductsUseCase>(PRODUCTS.GetProductsUseCase).to(GetProductsUseCase);
+
+container.bind<ApiClientInterface>(PRODUCTS.ApiClientInterface).to(AxiosClient);
+container.bind<StoreClientInterface>(PRODUCTS.StoreClientInterface).to(VuexStoreClient);
 
 const { lazyInject } = getDecorators(container);
 

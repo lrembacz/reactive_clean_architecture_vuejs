@@ -1,5 +1,5 @@
 import {Subscriber} from 'rxjs';
-import ViewModelInterface from '../viewModel/ViewModelInterface';
+import ViewModelInterface from './ViewModelInterface';
 
 export default abstract class  AbstractViewModelObserver<T, V extends ViewModelInterface> extends Subscriber<T> {
     protected viewModel: V;

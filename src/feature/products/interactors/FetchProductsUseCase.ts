@@ -1,24 +1,29 @@
-import AbstractObservableUseCase from '../../common/interactors/AbstractObservableUseCase';
+import AbstractObservableUseCase from '../../../core/domain/interactors/AbstractObservableUseCase';
 import Products from '../entity/Products';
-import {AxiosResponse} from 'axios';
 import {Observable} from 'rxjs';
-import {PRODUCTS} from '../di';
 import {inject, injectable} from 'inversify';
-import FetchProductsQueryObjectInterface from '../queryObject/FetchProductsQueryObjectInterface';
+import ProductsRepositoryInterface from '../repository/ProductsRepositoryInterface';
+import {tap} from 'rxjs/internal/operators';
+import {PRODUCTS} from '../di';
 
 @injectable()
-export default class FetchProductsUseCase extends AbstractObservableUseCase<AxiosResponse<Products>> {
-    public fetchProductsQueryObject: FetchProductsQueryObjectInterface;
+export default class FetchProductsUseCase extends AbstractObservableUseCase<Products> {
+    public productsRepository: ProductsRepositoryInterface;
 
     constructor(
-        @inject(PRODUCTS.FetchProductsQueryObjectInterface) fetchProductsQueryObject: FetchProductsQueryObjectInterface,
+        @inject(PRODUCTS.ProductsRepositoryInterface) productsRepository: ProductsRepositoryInterface,
     ) {
         super();
-        this.fetchProductsQueryObject = fetchProductsQueryObject;
+        this.productsRepository = productsRepository;
     }
 
-    public createObservable(): Observable<AxiosResponse<Products>> {
-        return this.fetchProductsQueryObject.execute();
+    public createObservable(): Observable<Products> {
+        return this.productsRepository.fetchProducts()
+            .pipe(
+                tap( (products: Products) => {
+                    this.productsRepository.setProducts(products);
+                }),
+            );
     }
 
 }

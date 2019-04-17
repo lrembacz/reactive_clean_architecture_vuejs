@@ -1,5 +1,5 @@
 import Products from '../entity/Products';
-import AbstractViewModelObserver from '../../common/observer/AbstractViewModelObserver';
+import AbstractViewModelObserver from '../../../core/presentation/viewModel/AbstractViewModelObserver';
 import ProductsViewModelInterface from '../viewModel/ProductsViewModelInterface';
 
 export default class GetProductsObserver extends AbstractViewModelObserver<Products, ProductsViewModelInterface> {

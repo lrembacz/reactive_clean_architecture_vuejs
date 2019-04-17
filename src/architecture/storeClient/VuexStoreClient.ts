@@ -1,22 +1,23 @@
-import StoreGatewayInterface from './StoreGatewayInterface';
-import {FluxStandardAction} from '../../../fsa';
+import StoreClientInterface from './StoreClientInterface';
+import {FluxStandardAction} from '../../fsa';
 import {Store} from 'vuex';
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {injectable} from 'inversify';
+import store from '../../store';
 
 @injectable()
-export default abstract class AbstractVuexGateway implements StoreGatewayInterface {
-    public abstract store: Store<any>;
+export default class VuexStoreClient implements StoreClientInterface {
+    public store: Store<any>;
 
-    public state<T>(property: any): T {
-        return this.fromState(property, this.store.state);
+    constructor() {
+        this.store = store;
     }
 
-    public dispatch<P>(action: FluxStandardAction<P, undefined>): Promise<any> {
-        return this.store.dispatch(action.type, action.payload);
+    public dispatch<P>(action: FluxStandardAction<P, undefined>): Observable<any> {
+        return from(this.store.dispatch(action.type, action.payload));
     }
 
-    public stateAsObservable<T>(property: any): Observable<T> {
+    public get<T>(property: any): Observable<T> {
         return new Observable<T>((subscriber) => {
             this.store.watch((state) => this.fromState(property, state),
                 (val: T) => {
