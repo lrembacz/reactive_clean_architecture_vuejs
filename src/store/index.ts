@@ -1,22 +1,13 @@
-import Vue from 'vue';
-import Vuex, {Store, StoreOptions} from 'vuex';
-import products from '../feature/products/store/modules/products';
+import productsStore from '../feature/products/store';
+import ProductsStore from '../feature/products/store/ProductsStore';
+import Store from './Store';
 
-Vue.use(Vuex);
-
-export interface RootState {
-    name: string;
+interface RootStore {
+    products: ProductsStore;
 }
 
-const storeOptions: StoreOptions<RootState> = {
-    state: {
-        name: 'app',
-    },
-    modules: {
-        products,
-    },
-};
-
-const store = new Store<any>(storeOptions);
+const store = new Store<RootStore>({
+    products: productsStore,
+});
 
 export default store;

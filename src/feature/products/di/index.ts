@@ -13,7 +13,7 @@ import ProductsRepository from '../repository/ProductsRepository';
 import ApiClientInterface from '../../../architecture/apiClient/ApiClientInterface';
 import AxiosClient from '../../../architecture/apiClient/AxiosClient';
 import StoreClientInterface from '../../../architecture/storeClient/StoreClientInterface';
-import VuexStoreClient from '../../../architecture/storeClient/VuexStoreClient';
+import RxStoreClient from '../../../architecture/storeClient/RxStoreClient';
 
 const container = new Container();
 
@@ -25,7 +25,7 @@ container.bind<FetchProductsUseCase>(PRODUCTS.FetchProductsUseCase).to(FetchProd
 container.bind<GetProductsUseCase>(PRODUCTS.GetProductsUseCase).to(GetProductsUseCase);
 
 container.bind<ApiClientInterface>(PRODUCTS.ApiClientInterface).to(AxiosClient);
-container.bind<StoreClientInterface>(PRODUCTS.StoreClientInterface).to(VuexStoreClient);
+container.bind<StoreClientInterface>(PRODUCTS.StoreClientInterface).to(RxStoreClient);
 
 const { lazyInject } = getDecorators(container);
 

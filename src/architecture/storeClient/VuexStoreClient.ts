@@ -3,7 +3,7 @@ import {FluxStandardAction} from '../../fsa';
 import {Store} from 'vuex';
 import {from, Observable} from 'rxjs';
 import {injectable} from 'inversify';
-import store from '../../store';
+import store from '../../store/vuex';
 
 @injectable()
 export default class VuexStoreClient implements StoreClientInterface {

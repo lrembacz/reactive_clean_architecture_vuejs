@@ -3,7 +3,7 @@ import Products from '../../../entity/Products';
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
-import {RootState} from '../../../../../store/index';
+import {RootState} from '../../../../../store/vuex';
 
 /**
  * Declare module types
